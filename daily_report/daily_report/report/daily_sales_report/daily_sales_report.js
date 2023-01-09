@@ -316,36 +316,31 @@ function row_celldynFunc(datalist){
 	// from weekdays in the lists.
 	for(var index = 0; index < datalist.length; index++) {	
 		var row_data = datalist[index];
+		html = ``;
 
-		if (row_data.day != 'Saturday' && row_data.day != 'Sunday')	{
-			html = ``;
-
-			var date = new Date(row_data.date);
-			if (date <= new Date()) {
-				html+=`<td style="font-family: Arial; font-size: 10pt;">`+date.toLocaleDateString('en-CA', options)+`</td>`;
-				html+=`<td style="font-family: Arial; font-size: 10pt;">`+row_data.day+`</td>`;
-				html+=`<td style="text-align: center;font-family: Arial; font-size: 10pt;">`+row_data.noofinv+`</td>`;
-				html+=`<td style="font-family: Arial; font-size: 10pt;">`+amountFormatter.format(row_data.sales)+`</td>`;
-				html+=`<td style="font-family: Arial; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
-				html+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
-				html+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
-			} else {
-				html+= curr_year_blank;
-			}
-
-			curr_year_html.push(html);
+		var date = new Date(row_data.date);
+		if (date <= new Date()) {
+			html+=`<td style="font-family: Arial; font-size: 10pt;">`+date.toLocaleDateString('en-CA', options)+`</td>`;
+			html+=`<td style="font-family: Arial; font-size: 10pt;">`+row_data.day+`</td>`;
+			html+=`<td style="text-align: center;font-family: Arial; font-size: 10pt;">`+row_data.noofinv+`</td>`;
+			html+=`<td style="font-family: Arial; font-size: 10pt;">`+amountFormatter.format(row_data.sales)+`</td>`;
+			html+=`<td style="font-family: Arial; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
+			html+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
+			html+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
+		} else {
+			html+= curr_year_blank;
 		}
 
-		if (row_data.day2 != 'Saturday' && row_data.day2 != 'Sunday')	{
-			html = ``;
-			html+=`<td style="font-family: Arial; font-size: 10pt; text-align: center;">`+row_data.noofinv2+`</td>`;
-			html+=`<td style="font-family: Arial; font-size: 10pt;">`+amountFormatter.format(row_data.sales2)+`</td>`;
-			html+=`<td style="font-family: Arial; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
-			html+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
-			html+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
+		curr_year_html.push(html);
 
-			prev_year_html.push(html);
-		}
+		html = ``;
+		html+=`<td style="font-family: Arial; font-size: 10pt; text-align: center;">`+row_data.noofinv2+`</td>`;
+		html+=`<td style="font-family: Arial; font-size: 10pt;">`+amountFormatter.format(row_data.sales2)+`</td>`;
+		html+=`<td style="font-family: Arial; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
+		html+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
+		html+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
+
+		prev_year_html.push(html);
 	}
 
 	// Pair rows by their list index instead of business day, so there are no gaps in the list.
@@ -379,30 +374,27 @@ function row_celldynFunc2(datalist, costcentlst){
 	// Iterate through each data row
 	for(var index = 0; index < datalist.length; index++) {
 		var row_data = datalist[index];	
-		
-		// Skip rows for weekends.
-		if (row_data.day != 'Saturday' && row_data.day != 'Sunday')	{
-			var right_border = 'border-right: 1px solid #89898d;';
 
-			celldynhtml+='<tr>';
-			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
-			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+row_data.day+'</td>';
-			for(var cnt=0; cnt < costcentlst.length; cnt++) 
-			{
-				var col1 = 'noofinvcstcnt' + cnt
-				var col2 = 'salescstcnt' + cnt
-				var col3 = 'salesmtdcstcnt' + cnt
-				var col4 = 'grosscstcnt' + cnt
-				var col5 = 'grossmtdcstcnt' + cnt
-				
-				celldynhtml+='<td style="text-align: center;font-family: Arial; font-size: 10pt;">'+row_data[col1]+'</td>';
-				celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+amountFormatter.format(row_data[col2])+'</td>';
-				celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
-				celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
-				celldynhtml+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
-			}
-			celldynhtml+='</tr>';
+		var right_border = 'border-right: 1px solid #89898d;';
+
+		celldynhtml+='<tr>';
+		celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
+		celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+row_data.day+'</td>';
+		for(var cnt=0; cnt < costcentlst.length; cnt++) 
+		{
+			var col1 = 'noofinvcstcnt' + cnt
+			var col2 = 'salescstcnt' + cnt
+			var col3 = 'salesmtdcstcnt' + cnt
+			var col4 = 'grosscstcnt' + cnt
+			var col5 = 'grossmtdcstcnt' + cnt
+			
+			celldynhtml+='<td style="text-align: center;font-family: Arial; font-size: 10pt;">'+row_data[col1]+'</td>';
+			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+amountFormatter.format(row_data[col2])+'</td>';
+			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
+			celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
+			celldynhtml+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
 		}
+		celldynhtml+='</tr>';
 	}
 
 	return celldynhtml;

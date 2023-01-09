@@ -270,7 +270,7 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
         data6.append(cstdict)  
                 
     datall=[data5,data6,cstcnt]
-
+    frappe.msgprint(f'{datall}')
     return datall 
 
 
