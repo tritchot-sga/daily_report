@@ -150,28 +150,23 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
         salesdayinwords = salesdate.strftime("%A")
         salesdayinwords2 = salesdate2.strftime("%A")
 
-        # For weekends, we just want to roll the results into the next business day, so don't reset the count on Sun/Mon
-        if (y[0] == 1 or (salesdayinwords != 'Sunday' and salesdayinwords != 'Monday')):
-            cumnoofinv1 = 0
-            cumsales1 = 0
-            cumgrossavg1 = 0
-            dategrossprf = 0.0
-            dategrossprfamt = 0.0
+        cumnoofinv1 = 0
+        cumsales1 = 0
+        cumgrossavg1 = 0
+        dategrossprf = 0.0
+        dategrossprfamt = 0.0
+        cumnoofinv2 = 0
+        cumsales2 = 0
+        cumgrossavg2 = 0
+        dategrossprf2 = 0.0
+        dategrossprfamt2 = 0.0
 
-            for i in range(cclength):
-                cumsales3[i] = 0
-                cumnoofinv3[i] = 0
-                cumgrossavg3[i] = 0
-                dategrossprf3[i]= 0.0
-                dategrossprfamt3[i]= 0.0
-
-        # For weekends, we just want to roll the results into the next business day, so don't reset the count on Sun/Mon
-        if (y[0] == 1 or (salesdayinwords2 != 'Sunday' and salesdayinwords2 != 'Monday')):
-            cumnoofinv2 = 0
-            cumsales2 = 0
-            cumgrossavg2 = 0
-            dategrossprf2 = 0.0
-            dategrossprfamt2 = 0.0
+        for i in range(cclength):
+            cumsales3[i] = 0
+            cumnoofinv3[i] = 0
+            cumgrossavg3[i] = 0
+            dategrossprf3[i]= 0.0
+            dategrossprfamt3[i]= 0.0
 
         for row in lstdata:
             dayno1 = 1
@@ -248,21 +243,19 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
             grossprfmtd2 = grossprfmtd2     
 
         # Only add data for weekdays, any weekend data is being rolled into another business day
-        is_weekday1 = (salesdayinwords != 'Saturday' and salesdayinwords != 'Sunday')
-        is_weekday2 = (salesdayinwords2 != 'Saturday' and salesdayinwords2 != 'Sunday')
         data5.append({"date":salesdate,"day":salesdayinwords,
-                      "noofinv":(cumnoofinv1 if is_weekday1 else 0),"sales":(cumsales1 if is_weekday1 else 0),"salesmtd":cumsalesmtd1,
-                      "gross":(cumgrossavg1 if is_weekday1 else 0),"grossmtd":grossprfmtd1,
+                      "noofinv":cumnoofinv1,"sales":cumsales1,"salesmtd":cumsalesmtd1,
+                      "gross":cumgrossavg1,"grossmtd":grossprfmtd1,
                       "date2":salesdate2,"day2":salesdayinwords2, 
-                      "noofinv2":(cumnoofinv2 if is_weekday2 else 0),"sales2":(cumsales2 if is_weekday2 else 0),"salesmtd2":cumsalesmtd2,
-                      "gross2":(cumgrossavg2 if is_weekday2 else 0),"grossmtd2":grossprfmtd2})
+                      "noofinv2":cumnoofinv2,"sales2":cumsales2,"salesmtd2":cumsalesmtd2,
+                      "gross2":cumgrossavg2,"grossmtd2":grossprfmtd2})
         
         cstdict = {"date":salesdate,"day":salesdayinwords} 
         for i in range(cclength):
-            cstdict["noofinvcstcnt" + str(i)] = (cumnoofinv3[i] if is_weekday1 else 0)
-            cstdict["salescstcnt" + str(i)] = (cumsales3[i] if is_weekday1 else 0)
+            cstdict["noofinvcstcnt" + str(i)] = cumnoofinv3[i]
+            cstdict["salescstcnt" + str(i)] = cumsales3[i]
             cstdict["salesmtdcstcnt" + str(i)] = cumsalesmtd3[i]
-            cstdict["grosscstcnt" + str(i)] = (cumgrossavg3[i] if is_weekday1 else 0)
+            cstdict["grosscstcnt" + str(i)] = cumgrossavg3[i]
             try:
                 grossprfmtd3[i] = (grossprfmtdcum3[i]/cumsalesmtd3[i])*100
             except ZeroDivisionError:
@@ -275,55 +268,6 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
             cstdict["grossmtdcstcnt" + str(i)] = grossprfmtd3[i]
 
         data6.append(cstdict)  
-
-
-        #################################################################################################################
-        # On the last day, check if it's a weekend. If so, we need to roll the results back into the last business day.
-        #################################################################################################################
-        if (y == workdaysinmth[len(workdaysinmth) - 1]):
-            last_index = len(data5) - 1
-            index1 = last_index
-            index2 = last_index
-
-            # Find the last business day for both data sets
-            while (data5[index1]["day"] == 'Saturday' or data5[index1]["day"] == 'Sunday'):
-                index1 -= 1
-
-            while (data5[index2]["day"] == 'Saturday' or data5[index2]["day"] == 'Sunday'):
-                index2 -= 1
-
-            # Where required, update the last business day to include any weekend data.
-            # Since we've already calculated gross margins, we'll need to use a weighted average when rolling the data backwards.
-            if (index1 != last_index):
-                total_sales = data5[index1]["sales"] + cumsales1
-                new_gross = 0 if total_sales == 0 else ((data5[index1]["sales"] / total_sales) * data5[index1]["gross"]) + ((cumsales1 / total_sales) * cumgrossavg1)
-
-                data5[index1]["noofinv"] += cumnoofinv1
-                data5[index1]["sales"] += cumsales1
-                data5[index1]["salesmtd"] = cumsalesmtd1
-                data5[index1]["gross"] = new_gross
-                data5[index1]["grossmtd"] = grossprfmtd1
-
-                # Do the same for cost center specific data
-                for i in range(cclength):
-                    total_sales = data6[index1]["salescstcnt" + str(i)] + cumsales3[i]
-                    new_gross = 0 if total_sales == 0 else ((data6[index1]["salescstcnt" + str(i)] / total_sales) * data6[index1]["grosscstcnt" + str(i)]) + ((cumsales3[i] / total_sales) * cumgrossavg3[i])
-
-                    data6[index1]["noofinvcstcnt" + str(i)] += cumnoofinv3[i]
-                    data6[index1]["salescstcnt" + str(i)] += cumsales3[i]
-                    data6[index1]["salesmtdcstcnt" + str(i)] = cumsalesmtd3[i]
-                    data6[index1]["grosscstcnt" + str(i)] = new_gross
-                    data6[index1]["grossmtdcstcnt" + str(i)] = grossprfmtd3[i]
-
-            if (index2 != last_index):
-                total_sales = data5[index2]["sales"] + cumsales2
-                new_gross = 0 if total_sales == 0 else ((data5[index2]["sales"] / total_sales) * data5[index2]["gross"]) + ((cumsales2 / total_sales) * cumgrossavg2)
-
-                data5[index2]["noofinv"] += cumnoofinv2
-                data5[index2]["sales"] += cumsales2
-                data5[index2]["salesmtd"] = cumsalesmtd2
-                data5[index2]["gross"] = new_gross
-                data5[index2]["grossmtd"] = grossprfmtd2
                 
     datall=[data5,data6,cstcnt]
 

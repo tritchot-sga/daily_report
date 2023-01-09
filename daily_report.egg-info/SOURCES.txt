@@ -27,5 +27,6 @@ daily_report/daily_report/report/daily_sales_report/__init__.py
 daily_report/daily_report/report/daily_sales_report/daily_sales_report.js
 daily_report/daily_report/report/daily_sales_report/daily_sales_report.json
 daily_report/daily_report/report/daily_sales_report/daily_sales_report.py
+daily_report/daily_report/report/daily_sales_report/gross_profit_generators.py
 daily_report/templates/__init__.py
 daily_report/templates/pages/__init__.py
