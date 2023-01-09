@@ -443,7 +443,7 @@ Content-Type: text/html; charset=windows-1252
     }
 </style>
 </head>
-<body><table>{SheetContent}</table></body>
+<body><table style="mso-page-orientation:landscape;">{SheetContent}</table></body>
 </html>`
 		, template_WorkBook = `MIME-Version: 1.0
 X-Document-Type: Workbook
@@ -458,14 +458,6 @@ Content-Type: text/html; charset=windows-1252
 <meta name="Excel Workbook Frameset">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="File-List" href="filelist.xml">
-<style type="text/css">
-    @page { 
-        margin:1.0in 1.25in 1.0in 1.25in;
-		mso-header-margin:.5in;
-		mso-footer-margin:.5in;
-		mso-page-orientation:landscape;
-    }
-</style>
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
