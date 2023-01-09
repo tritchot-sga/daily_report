@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include daily_report *.css
+recursive-include daily_report *.csv
+recursive-include daily_report *.html
+recursive-include daily_report *.ico
+recursive-include daily_report *.js
+recursive-include daily_report *.json
+recursive-include daily_report *.md
+recursive-include daily_report *.png
+recursive-include daily_report *.py
+recursive-include daily_report *.svg
+recursive-include daily_report *.txt
+recursive-exclude daily_report *.pyc
