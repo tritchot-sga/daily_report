@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 // Determines whether or not the gross profit MTD should be displayed. Adjusts the spreadsheet to account for the columns absence/presence.
-_use_gross_profit_mtd = false;
+_use_gross_profit_mtd = true;
 
 const _months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -434,16 +434,8 @@ Content-Type: text/html; charset=windows-1252
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link id="Main-File" rel="Main-File" href="../WorkBook.htm">
 <link rel="File-List" href="filelist.xml">
-<style type="text/css">
-    @page { 
-        margin:1.0in 1.25in 1.0in 1.25in;
-		mso-header-margin:.5in;
-		mso-footer-margin:.5in;
-		mso-page-orientation:landscape;
-    }
-</style>
 </head>
-<body><table style="mso-page-orientation:landscape;">{SheetContent}</table></body>
+<body><table>{SheetContent}</table></body>
 </html>`
 		, template_WorkBook = `MIME-Version: 1.0
 X-Document-Type: Workbook
@@ -464,6 +456,19 @@ Content-Type: text/html; charset=windows-1252
 <x:ActiveSheet>0</x:ActiveSheet>
 </x:ExcelWorkbook>
 </xml><![endif]-->
+<style>
+<!--table {
+	mso-displayed-decimal-separator:"\.";
+	}
+    
+	@page { 
+        margin:1.0in 1.25in 1.0in 1.25in;
+		mso-header-margin:.5in;
+		mso-footer-margin:.5in;
+		mso-page-orientation:landscape;
+    }
+-->
+</style>
 </head>
 <frameset>
 <frame src="sheet0.htm" name="frSheet">
