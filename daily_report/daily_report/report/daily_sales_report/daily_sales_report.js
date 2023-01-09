@@ -434,7 +434,7 @@ Content-Type: text/html; charset=windows-1252
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link id="Main-File" rel="Main-File" href="../WorkBook.htm">
 <link rel="File-List" href="filelist.xml">
-<style type="text/css" media="print">
+<style type="text/css">
     @page { 
         margin:1.0in 1.25in 1.0in 1.25in;
 		mso-header-margin:.5in;
@@ -458,6 +458,14 @@ Content-Type: text/html; charset=windows-1252
 <meta name="Excel Workbook Frameset">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="File-List" href="filelist.xml">
+<style type="text/css">
+    @page { 
+        margin:1.0in 1.25in 1.0in 1.25in;
+		mso-header-margin:.5in;
+		mso-footer-margin:.5in;
+		mso-page-orientation:landscape;
+    }
+</style>
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
