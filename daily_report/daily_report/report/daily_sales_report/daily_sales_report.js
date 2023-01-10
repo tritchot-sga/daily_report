@@ -179,6 +179,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	// Generate year totals at the bottom of the table
 	var grossmar = formatAsPercent(grossmarlast)
 	dynhtml+=`<tr><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
+	dynhtml+='<tr />';
 	dynhtml+='<tr>';
 	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales   ' + '</td>';
     dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
@@ -297,6 +298,7 @@ function row_celldynFunc(datalist){
 	    maximumFractionDigits: 2,
 	});
 
+	var left_border = 'border-left: 1px solid #89898d;';
 	var right_border = 'border-right: 1px solid #89898d;';
 	var curr_year_blank = `<td /><td /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
 	var prev_year_blank = `<td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
@@ -309,7 +311,7 @@ function row_celldynFunc(datalist){
 
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
-			html+=`<td style="font-family: Arial; font-size: 10pt;">`+date.toLocaleDateString('en-CA', options)+`</td>`;
+			html+=`<td style="font-family: Arial; font-size: 10pt; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
 			html+=`<td style="font-family: Arial; font-size: 10pt;">`+row_data.day+`</td>`;
 			html+=`<td style="text-align: center;font-family: Arial; font-size: 10pt;">`+row_data.noofinv+`</td>`;
 			html+=`<td style="font-family: Arial; font-size: 10pt;">`+amountFormatter.format(row_data.sales)+`</td>`;
@@ -364,10 +366,11 @@ function row_celldynFunc2(datalist, costcentlst){
 	for(var index = 0; index < datalist.length; index++) {
 		var row_data = datalist[index];	
 
+		var left_border = 'border-left: 1px solid #89898d;';
 		var right_border = 'border-right: 1px solid #89898d;';
 
 		celldynhtml+='<tr>';
-		celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
+		celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
 		celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+row_data.day+'</td>';
 		for(var cnt=0; cnt < costcentlst.length; cnt++) 
 		{
@@ -377,7 +380,7 @@ function row_celldynFunc2(datalist, costcentlst){
 			var col4 = 'grosscstcnt' + cnt
 			var col5 = 'grossmtdcstcnt' + cnt
 			
-			celldynhtml+='<td style="text-align: center;font-family: Arial; font-size: 10pt;">'+row_data[col1]+'</td>';
+			celldynhtml+=`<td style="text-align: center;font-family: Arial; font-size: 10pt; ${left_border}">`+row_data[col1]+'</td>';
 			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+amountFormatter.format(row_data[col2])+'</td>';
 			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
 			celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
