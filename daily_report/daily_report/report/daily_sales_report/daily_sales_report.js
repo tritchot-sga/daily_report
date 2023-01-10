@@ -460,6 +460,16 @@ Content-Type: text/html; charset=windows-1252
 <meta name="Excel Workbook Frameset">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="File-List" href="filelist.xml">
+<style>
+	@page
+	{
+		margin:.25in .25in .25in .25in;
+		mso-header-margin:.025in;
+		mso-footer-margin:.025in;
+		size:A4;
+		mso-page-orientation:landscape;
+	}
+</style>
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
