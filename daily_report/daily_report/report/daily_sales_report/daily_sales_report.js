@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 // Determines whether or not the gross profit MTD should be displayed. Adjusts the spreadsheet to account for the columns absence/presence.
-_use_gross_profit_mtd = false;
+_use_gross_profit_mtd = true;
 
 const _months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -180,7 +180,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	var grossmar = formatAsPercent(grossmarlast)
 	dynhtml+=`<tr><td /><td /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="border-right: 1px solid #89898d;" /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="border-right: 1px solid #89898d;"></td></tr>`;
 	dynhtml+=`<tr><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
-	dynhtml+='<tr /><tr /><tr /><tr />';
+	dynhtml+='<tr />';
 	dynhtml+='<tr>';
 	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales   ' + '</td>';
     dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="1"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
@@ -420,9 +420,7 @@ function formatAsPercent(num) {
 var tablesToExcel = (function () {
 	var uri = 'data:application/vnd.ms-excel;base64,'
 		, html_start = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">`
-		, worksheet_options = `<x:WorksheetOptions><x:Print><x:ValidPrinterInfo/><x:HorizontalResolution>1200</x:HorizontalResolution><x:VerticalResolution>1200</x:VerticalResolution><x:Scale>70</x:Scale></x:Print><x:Selected/><x:DoNotDisplayGridlines/><x:ProtectContents>False</x:ProtectContents><x:ProtectObjects>False</x:ProtectObjects><x:ProtectScenarios>False</x:ProtectScenarios></x:WorksheetOptions>`
-		, workbook_settings = `<x:WindowHeight>12780</x:WindowHeight><x:WindowWidth>19035</x:WindowWidth><x:WindowTopX>0</x:WindowTopX><x:WindowTopY>15</x:WindowTopY><x:ProtectStructure>False</x:ProtectStructure><x:ProtectWindows>False</x:ProtectWindows>`
-		, template_ExcelWorksheet = `<x:ExcelWorksheet><x:Name>{SheetName}</x:Name><x:WorksheetSource HRef="sheet{SheetIndex}.htm"/>` + worksheet_options + `</x:ExcelWorksheet>`
+		, template_ExcelWorksheet = `<x:ExcelWorksheet><x:Name>{SheetName}</x:Name><x:WorksheetSource HRef="sheet{SheetIndex}.htm"/></x:ExcelWorksheet>`
 		, template_ListWorksheet = `<o:File HRef="sheet{SheetIndex}.htm"/>`
 		, template_HTMLWorksheet = `
 ------=_NextPart_dummy
@@ -461,8 +459,8 @@ Content-Type: text/html; charset=windows-1252
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
-<x:ActiveSheet>0</x:ActiveSheet>` + workbook_settings +
-`</x:ExcelWorkbook>
+<x:ActiveSheet>0</x:ActiveSheet>
+</x:ExcelWorkbook>
 </xml><![endif]-->
 </head>
 <frameset>
