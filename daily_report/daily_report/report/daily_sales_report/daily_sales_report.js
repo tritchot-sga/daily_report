@@ -372,7 +372,7 @@ function row_celldynFunc2(datalist, costcentlst){
 		if (date <= new Date()) {
 			celldynhtml+='<tr>';
 			celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
-			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+row_data.day+'</td>';
+			celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+row_data.day+'</td>';
 			for(var cnt=0; cnt < costcentlst.length; cnt++) 
 			{
 				var col1 = 'noofinvcstcnt' + cnt
@@ -390,8 +390,9 @@ function row_celldynFunc2(datalist, costcentlst){
 			celldynhtml+='</tr>';
 		} else {
 			celldynhtml+='<tr>';
+			celldynhtml+=`<td style="${left_border}" /><td style="${right_border}" />`;
 			for(var cnt=0; cnt < costcentlst.length; cnt++) {
-				celldynhtml += `<td style="${left_border}">HAZZAH</td>${cnt == 0 ? '<td /><td />' : ''}<td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
+				celldynhtml += `<td style="${left_border}" /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
 			}
 			celldynhtml+='</tr>';
 		}
