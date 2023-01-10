@@ -83,7 +83,7 @@ frappe.query_reports["Daily Sales Report"] = {
 
 function dynamic_exportcontent(cnt_list,company,fmonth,fyear){	
 	var dynhtml="";
-	dynhtml='<div id="dvData">';
+	dynhtml='<div id="dvData" class=Section1>';
 	var totlcnt=[];
 	var $crntid="exprtid_1";
 	totlcnt[0]="#"+$crntid;
@@ -433,13 +433,21 @@ Content-Type: text/html; charset=windows-1252
 <link id="Main-File" rel="Main-File" href="../WorkBook.htm">
 <link rel="File-List" href="filelist.xml">
 <style>
-	@page
-	{
+	@page {
 		margin:.25in .25in .25in .25in;
 		mso-header-margin:.025in;
 		mso-footer-margin:.025in;
 		size:A4;
 		mso-page-orientation:landscape;
+	}
+
+	@page Section1 {
+		size:A4;
+		mso-page-orientation:landscape;
+	}
+
+	div.Section1 {
+		page:Section1;
 	}
 </style>
 </head>
