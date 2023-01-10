@@ -440,8 +440,7 @@ Content-Type: text/html; charset=windows-1252
 		margin:.25in .25in .25in .25in;
 		mso-header-margin:.025in;
 		mso-footer-margin:.025in;
-		size: 841.95pt 595.35pt; /* EU A4 */
-         /* size:11.0in 8.5in; */ /* US Letter */
+		size: A4;
 		mso-page-orientation:landscape;
 	}
 </style>
