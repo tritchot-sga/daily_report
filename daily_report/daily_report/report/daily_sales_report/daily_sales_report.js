@@ -300,11 +300,10 @@ function row_celldynFunc(datalist){
 
 	var left_border = 'border-left: 1px solid #89898d;';
 	var right_border = 'border-right: 1px solid #89898d;';
-	var curr_year_blank = `<td /><td /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
-	var prev_year_blank = `<td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
+	var curr_year_blank = `<td style="${left_border}" /><td /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
+	var prev_year_blank = `<td style="${left_border}" /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
 
-	// Iterate through the data list, adding seperate year data to separate lists. Only include data
-	// from weekdays in the lists.
+	// Iterate through the data list, adding seperate year data to separate lists.
 	for(var index = 0; index < datalist.length; index++) {	
 		var row_data = datalist[index];
 		html = ``;
@@ -369,24 +368,33 @@ function row_celldynFunc2(datalist, costcentlst){
 		var left_border = 'border-left: 1px solid #89898d;';
 		var right_border = 'border-right: 1px solid #89898d;';
 
-		celldynhtml+='<tr>';
-		celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
-		celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+row_data.day+'</td>';
-		for(var cnt=0; cnt < costcentlst.length; cnt++) 
-		{
-			var col1 = 'noofinvcstcnt' + cnt
-			var col2 = 'salescstcnt' + cnt
-			var col3 = 'salesmtdcstcnt' + cnt
-			var col4 = 'grosscstcnt' + cnt
-			var col5 = 'grossmtdcstcnt' + cnt
-			
-			celldynhtml+=`<td style="text-align: center;font-family: Arial; font-size: 10pt; ${left_border}">`+row_data[col1]+'</td>';
-			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+amountFormatter.format(row_data[col2])+'</td>';
-			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
-			celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
-			celldynhtml+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
+		var date = new Date(row_data.date);
+		if (date <= new Date()) {
+			celldynhtml+='<tr>';
+			celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
+			celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+row_data.day+'</td>';
+			for(var cnt=0; cnt < costcentlst.length; cnt++) 
+			{
+				var col1 = 'noofinvcstcnt' + cnt
+				var col2 = 'salescstcnt' + cnt
+				var col3 = 'salesmtdcstcnt' + cnt
+				var col4 = 'grosscstcnt' + cnt
+				var col5 = 'grossmtdcstcnt' + cnt
+				
+				celldynhtml+=`<td style="text-align: center;font-family: Arial; font-size: 10pt; ${left_border}">`+row_data[col1]+'</td>';
+				celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+amountFormatter.format(row_data[col2])+'</td>';
+				celldynhtml+='<td style="font-family: Arial; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
+				celldynhtml+=`<td style="font-family: Arial; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
+				celldynhtml+=_use_gross_profit_mtd ? `<td style="font-family: Arial; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
+			}
+			celldynhtml+='</tr>';
+		} else {
+			celldynhtml+='<tr>';
+			for(var cnt=0; cnt < costcentlst.length; cnt++) {
+				celldynhtml += `<td style="${left_border}" />${cnt == 0 ? '<td /><td />' : ''}<td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
+			}
+			celldynhtml+='</tr>';
 		}
-		celldynhtml+='</tr>';
 	}
 
 	return celldynhtml;
