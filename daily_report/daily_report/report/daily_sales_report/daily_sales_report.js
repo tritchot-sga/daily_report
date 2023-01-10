@@ -190,8 +190,6 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
     dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="1"> ' + "&nbsp;" + grossmar +  '</td>';
 	dynhtml+='</tr>';
 	dynhtml+='</table>';
-	dynhtml+='</div>';
-
 
 	//==================================================
 	// TABLE - DAILY SALES BY COST CENTER
@@ -460,16 +458,6 @@ Content-Type: text/html; charset=windows-1252
 <meta name="Excel Workbook Frameset">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="File-List" href="filelist.xml">
-<style>
-	@page
-	{
-		margin:.25in .25in .25in .25in;
-		mso-header-margin:.025in;
-		mso-footer-margin:.025in;
-		size:A4;
-		mso-page-orientation:landscape;
-	}
-</style>
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
