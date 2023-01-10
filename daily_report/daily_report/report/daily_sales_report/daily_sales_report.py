@@ -242,7 +242,6 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
         except ZeroDivisionError:
             grossprfmtd2 = grossprfmtd2     
 
-        # Only add data for weekdays, any weekend data is being rolled into another business day
         data5.append({"date":salesdate,"day":salesdayinwords,
                       "noofinv":cumnoofinv1,"sales":cumsales1,"salesmtd":cumsalesmtd1,
                       "gross":cumgrossavg1,"grossmtd":grossprfmtd1,
