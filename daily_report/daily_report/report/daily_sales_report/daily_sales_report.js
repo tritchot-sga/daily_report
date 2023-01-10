@@ -450,6 +450,208 @@ Content-Type: text/html; charset=windows-1252
 <meta name="Excel Workbook Frameset">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="File-List" href="filelist.xml">
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{mso-header-data:"&CInventory";
+	mso-footer-data:"Page &P of &N";
+	margin:.31in 0in .31in 0in;
+	mso-header-margin:0in;
+	mso-footer-margin:0in;
+	mso-page-orientation:landscape;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:128;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normal;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:128;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;
+        overflow:hidden;}
+.xl23
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"0;-0;;@";
+	text-align:center;
+	vertical-align:top;}
+.xl24
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\@";
+	vertical-align:top;}
+.xl25
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\@";
+	text-align:left;
+	vertical-align:top;}
+.xl26
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\#\,\#\#0";
+	text-align:right;
+	vertical-align:top;}
+.xl27
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\0022x\0022\;\0022x\0022\;\0022\0022";
+	text-align:center;
+	vertical-align:top;}
+.xl28
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	font-weight:700;
+	mso-number-format:"\@";
+	border-top:.5pt solid black;
+	border-right:none;
+	border-bottom:none;
+	border-left:.5pt solid black;}
+.xl29
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	font-weight:700;
+	mso-number-format:"\@";
+	border-top:.5pt solid black;
+	border-right:none;
+	border-bottom:none;
+	border-left:none;}
+.xl30
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	font-weight:700;
+	mso-number-format:"\@";
+	border-top:.5pt solid black;
+	border-right:.5pt solid black;
+	border-bottom:none;
+	border-left:none;}
+.xl31
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:0;
+	text-align:right;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:.5pt solid black;}
+.xl32
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\@";
+	vertical-align:top;
+	border-top:none;
+	border-right:.5pt solid black;
+	border-bottom:none;
+	border-left:none;}
+.xl33
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:0;
+	text-align:right;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:.5pt solid black;}
+.xl34
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\@";
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl35
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\@";
+	text-align:left;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl36
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\#\,\#\#0";
+	text-align:right;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl37
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"0\;\\-0\;\;\@";
+	text-align:center;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl38
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:"\@";
+	vertical-align:top;
+	border-top:none;
+	border-right:.5pt solid black;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl39
+	{mso-style-parent:style0;
+	font-size:8.0pt;
+	mso-number-format:0;
+	text-align:center;
+	vertical-align:top;}
+-->
+</style>
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
@@ -465,19 +667,6 @@ Content-Type: text/html; charset=windows-1252
 {HTMLWorksheets}
 Content-Location: filelist.xml
 Content-Type: text/xml; charset="utf-8"
-<style>
-<!--table {
-	mso-displayed-decimal-separator:"\.";
-	}
-    
-	@page { 
-        margin:1.0in 1.25in 1.0in 1.25in;
-		mso-header-margin:.5in;
-		mso-footer-margin:.5in;
-		mso-page-orientation:landscape;
-    }
--->
-</style>
 <xml xmlns:o="urn:schemas-microsoft-com:office:office">
 <o:MainFile HRef="../WorkBook.htm"/>
 {ListWorksheets}
