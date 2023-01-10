@@ -179,14 +179,13 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	// Generate year totals at the bottom of the table
 	var grossmar = formatAsPercent(grossmarlast)
 	dynhtml+=`<tr><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
-	dynhtml+='<tr />';
 	dynhtml+='<tr>';
 	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales   ' + '</td>';
-    dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="1"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
+    dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
     dynhtml+='</tr>';
 	dynhtml+='<tr>';
 	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Margin  ' + '</td>';
-    dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="1"> ' + "&nbsp;" + grossmar +  '</td>';
+    dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + grossmar +  '</td>';
 	dynhtml+='</tr>';
 	dynhtml+='</table>';
 
