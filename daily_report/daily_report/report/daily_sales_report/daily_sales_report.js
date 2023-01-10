@@ -178,7 +178,6 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 
 	// Generate year totals at the bottom of the table
 	var grossmar = formatAsPercent(grossmarlast)
-	dynhtml+=`<tr><td /><td /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="border-right: 1px solid #89898d;" /><td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="border-right: 1px solid #89898d;"></td></tr>`;
 	dynhtml+=`<tr><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
 	dynhtml+='<tr />';
 	dynhtml+='<tr>';
@@ -262,10 +261,6 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	// Close off the bottom of the table.
 	dynhtml+='<tr>'
 	dynhtml+='<td style=""></td><td style="">'
-	for(var cnt=0; cnt < datacostcntlist3.length; cnt++) 
-	{
-	    dynhtml+=`<td /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="border-right: 1px solid #89898d;" />`;
-	}
 	dynhtml+='</tr>'
 	dynhtml+='<tr>'
 	dynhtml+='<td style="border-bottom: 1px solid #89898d;"></td><td style="border-bottom: 1px solid #89898d;"></td>'
