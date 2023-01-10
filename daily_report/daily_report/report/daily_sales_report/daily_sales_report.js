@@ -420,19 +420,7 @@ function formatAsPercent(num) {
 var tablesToExcel = (function () {
 	var uri = 'data:application/vnd.ms-excel;base64,'
 		, html_start = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">`
-		, worksheet_options = `<x:WorksheetOptions>
-									<x:Print>
-										<x:ValidPrinterInfo />
-										<x:PaperSizeIndex>9</x:PaperSizeIndex>
-										<x:HorizontalResolution>600</x:HorizontalResolution>
-										<x:VerticalResolution>600</x:VerticalResolution>
-									</x:Print>
-									<x:Selected />
-									<x:DoNotDisplayGridlines />
-									<x:ProtectContents>False</x:ProtectContents>
-									<x:ProtectObjects>False</x:ProtectObjects>
-									<x:ProtectScenarios>False</x:ProtectScenarios>
-								</x:WorksheetOptions>`
+		, worksheet_options = `<x:WorksheetOptions><x:Print><x:ValidPrinterInfo /><x:PaperSizeIndex>9</x:PaperSizeIndex><x:HorizontalResolution>600</x:HorizontalResolution><x:VerticalResolution>600</x:VerticalResolution></x:Print><x:Selected /><x:DoNotDisplayGridlines /><x:ProtectContents>False</x:ProtectContents><x:ProtectObjects>False</x:ProtectObjects><x:ProtectScenarios>False</x:ProtectScenarios></x:WorksheetOptions>`
 		, template_ExcelWorksheet = `<x:ExcelWorksheet><x:Name>{SheetName}</x:Name><x:WorksheetSource HRef="sheet{SheetIndex}.htm"/>` + worksheet_options + `</x:ExcelWorksheet>`
 		, template_ListWorksheet = `<o:File HRef="sheet{SheetIndex}.htm"/>`
 		, template_HTMLWorksheet = `
