@@ -310,7 +310,7 @@ function row_celldynFunc(datalist){
 
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
-			html+=`<td style="font-family: Calibri; font-size: 10pt; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
+			html+=`<td style="text-align: center; font-family: Calibri; font-size: 10pt; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
 			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+row_data.day+`</td>`;
 			html+=`<td style="text-align: center;font-family: Calibri; font-size: 10pt;">`+row_data.noofinv+`</td>`;
 			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+amountFormatter.format(row_data.sales)+`</td>`;
@@ -371,7 +371,7 @@ function row_celldynFunc2(datalist, costcentlst){
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
 			celldynhtml+='<tr>';
-			celldynhtml+=`<td style="font-family: Calibri; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
+			celldynhtml+=`<td style="text-align: center; font-family: Calibri; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
 			celldynhtml+=`<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+row_data.day+'</td>';
 			for(var cnt=0; cnt < costcentlst.length; cnt++) 
 			{
