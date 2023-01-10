@@ -434,15 +434,6 @@ Content-Type: text/html; charset=windows-1252
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link id="Main-File" rel="Main-File" href="../WorkBook.htm">
 <link rel="File-List" href="filelist.xml">
-<style>
-	@page
-	{
-		margin:.25in .25in .25in .25in;
-		mso-header-margin:.025in;
-		mso-footer-margin:.025in;
-		mso-page-orientation:landscape;
-	}
-</style>
 </head>
 <body><table>{SheetContent}</table></body>
 </html>`
