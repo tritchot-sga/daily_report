@@ -434,6 +434,15 @@ Content-Type: text/html; charset=windows-1252
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link id="Main-File" rel="Main-File" href="../WorkBook.htm">
 <link rel="File-List" href="filelist.xml">
+<style>
+	@page
+	{
+		margin:.25in .25in .25in .25in;
+		mso-header-margin:.025in;
+		mso-footer-margin:.025in;
+		mso-page-orientation:landscape;
+	}
+</style>
 </head>
 <body><table>{SheetContent}</table></body>
 </html>`
@@ -451,67 +460,13 @@ Content-Type: text/html; charset=windows-1252
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <link rel="File-List" href="filelist.xml">
 <style>
-<!--table
-	{mso-displayed-decimal-separator:"\.";
-	mso-displayed-thousand-separator:"\,";}
-@page
-	{mso-header-data:"&CInventory";
-	mso-footer-data:"Page &P of &N";
-	margin:.31in 0in .31in 0in;
-	mso-header-margin:0in;
-	mso-footer-margin:0in;
-	mso-page-orientation:landscape;}
-tr
-	{mso-height-source:auto;}
-col
-	{mso-width-source:auto;}
-br
-	{mso-data-placement:same-cell;}
-.style0
-	{mso-number-format:General;
-	text-align:general;
-	vertical-align:bottom;
-	white-space:nowrap;
-	mso-rotate:0;
-	mso-background-source:auto;
-	mso-pattern:auto;
-	color:windowtext;
-	font-size:10.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:Arial;
-	mso-generic-font-family:auto;
-	mso-font-charset:128;
-	border:none;
-	mso-protection:locked visible;
-	mso-style-name:Normal;
-	mso-style-id:0;}
-td
-	{mso-style-parent:style0;
-	padding-top:1px;
-	padding-right:1px;
-	padding-left:1px;
-	mso-ignore:padding;
-	color:windowtext;
-	font-size:10.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:Arial;
-	mso-generic-font-family:auto;
-	mso-font-charset:128;
-	mso-number-format:General;
-	text-align:general;
-	vertical-align:bottom;
-	border:none;
-	mso-background-source:auto;
-	mso-pattern:auto;
-	mso-protection:locked visible;
-	white-space:nowrap;
-	mso-rotate:0;
-    overflow:hidden;}
--->
+	@page
+	{
+		margin:.25in .25in .25in .25in;
+		mso-header-margin:.025in;
+		mso-footer-margin:.025in;
+		mso-page-orientation:landscape;
+	}
 </style>
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
