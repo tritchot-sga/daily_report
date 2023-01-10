@@ -441,6 +441,7 @@ Content-Type: text/html; charset=windows-1252
 		mso-header-margin:.025in;
 		mso-footer-margin:.025in;
 		mso-page-orientation:landscape;
+        size:11.0in 8.5in;
 	}
 </style>
 </head>
