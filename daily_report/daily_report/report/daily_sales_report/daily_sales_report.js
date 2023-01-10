@@ -83,7 +83,7 @@ frappe.query_reports["Daily Sales Report"] = {
 
 function dynamic_exportcontent(cnt_list,company,fmonth,fyear){	
 	var dynhtml="";
-	dynhtml='<div id="dvData" class=Section1>';
+	dynhtml='<div id="dvData">';
 	var totlcnt=[];
 	var $crntid="exprtid_1";
 	totlcnt[0]="#"+$crntid;
@@ -420,7 +420,20 @@ function formatAsPercent(num) {
 var tablesToExcel = (function () {
 	var uri = 'data:application/vnd.ms-excel;base64,'
 		, html_start = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">`
-		, template_ExcelWorksheet = `<x:ExcelWorksheet><x:Name>{SheetName}</x:Name><x:WorksheetSource HRef="sheet{SheetIndex}.htm"/></x:ExcelWorksheet>`
+		, worksheet_options = `<x:WorksheetOptions>
+									<x:Print>
+										<x:ValidPrinterInfo />
+										<x:PaperSizeIndex>9</x:PaperSizeIndex>
+										<x:HorizontalResolution>600</x:HorizontalResolution>
+										<x:VerticalResolution>600</x:VerticalResolution>
+									</x:Print>
+									<x:Selected />
+									<x:DoNotDisplayGridlines />
+									<x:ProtectContents>False</x:ProtectContents>
+									<x:ProtectObjects>False</x:ProtectObjects>
+									<x:ProtectScenarios>False</x:ProtectScenarios>
+								</x:WorksheetOptions>`
+		, template_ExcelWorksheet = `<x:ExcelWorksheet><x:Name>{SheetName}</x:Name><x:WorksheetSource HRef="sheet{SheetIndex}.htm"/>` + worksheet_options + `</x:ExcelWorksheet>`
 		, template_ListWorksheet = `<o:File HRef="sheet{SheetIndex}.htm"/>`
 		, template_HTMLWorksheet = `
 ------=_NextPart_dummy
@@ -437,17 +450,7 @@ Content-Type: text/html; charset=windows-1252
 		margin:.25in .25in .25in .25in;
 		mso-header-margin:.025in;
 		mso-footer-margin:.025in;
-		size:A4;
 		mso-page-orientation:landscape;
-	}
-
-	@page Section1 {
-		size:A4;
-		mso-page-orientation:landscape;
-	}
-
-	div.Section1 {
-		page:Section1;
 	}
 </style>
 </head>
