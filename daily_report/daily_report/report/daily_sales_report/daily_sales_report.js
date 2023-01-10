@@ -100,7 +100,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	// Generate the table title
 	dynhtml+='<table style= "font-family: Arial; font-size: 10pt;" id='+$crntid+'>';
 	dynhtml+='<caption style="text-align: left;"><span style="font-weight: bold;text-align: left;font-family: Arial; font-size: 10pt;">Sales Statistics For '+company+'</br></span><span style="font-family: Arial; font-size: 10pt; font-weight: normal;text-align: left;">'+ 'Month: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + fmonth + '-' + fyear +'</span><caption>';	
-	dynhtml+='<tr><td>&nbsp;</td></tr>';
+	dynhtml+='<tr style="height:5px;"><td>&nbsp;</td></tr>';
     dynhtml+='<tr>';
 	dynhtml+=`<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Arial; font-size: 10pt;" colspan="${_use_gross_profit_mtd ? '7' : '6'}"> ` + "&nbsp;" + fmonth + ' ' + fyear + '</span></th>';
     dynhtml+=`<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Arial; font-size: 10pt;" colspan="${_use_gross_profit_mtd ? '5' : '4'}"> `+ "&nbsp;" + fmonth + ' ' + (parseInt(fyear) - 1).toString()+'</th>';
@@ -113,12 +113,12 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 		var colmnth= titlelist[cnt].label.toString();
 		var colfldname = titlelist[cnt].fieldname.toString();
 		if (colfldname=='noofinv2') {
-			colmnth= "# of Inv.'s"
-			dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			colmnth= "# Inv.'s"
+			dynhtml+='<td width="80" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='sales2') {
 			colmnth= 'Sales'
-			dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			dynhtml+='<td width="135" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='salesmtd2') {
 			colmnth= 'Sales MTD'
@@ -133,14 +133,14 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 			dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='sales') {
-			dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			dynhtml+='<td width="135" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='salesmtd') {
 			dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='noofinv') {
-			colmnth= "# of Inv.'s"
-			dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			colmnth= "# Inv.'s"
+			dynhtml+='<td width="80" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='gross') {
 			dynhtml+='<td width="100" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
@@ -230,14 +230,14 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 			var colfldname = titlelist[cnt].fieldname.toString();
 
 			if (colfldname=='sales') {
-				dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+				dynhtml+='<td width="135" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 			}
 			else if (colfldname=='salesmtd') {
 				dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 			}
 			else if (colfldname=='noofinv') {
-				colmnth= "# of Inv.'s"
-				dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+				colmnth= "# Inv.'s"
+				dynhtml+='<td width="80" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 			}
 			else if (colfldname=='gross') {
 				dynhtml+='<td width="100" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Arial; font-size: 10pt;">'+(colmnth).toString()+'</td>';
@@ -259,9 +259,6 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	dynhtml += row_celldynFunc2(datalist2,datacostcntlist3)
 
 	// Close off the bottom of the table.
-	dynhtml+='<tr>'
-	dynhtml+='<td style=""></td><td style="">'
-	dynhtml+='</tr>'
 	dynhtml+='<tr>'
 	dynhtml+='<td style="border-bottom: 1px solid #89898d;"></td><td style="border-bottom: 1px solid #89898d;"></td>'
 	for(var cnt=0; cnt < datacostcntlist3.length; cnt++) 
