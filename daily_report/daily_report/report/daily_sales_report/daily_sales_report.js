@@ -420,7 +420,8 @@ function formatAsPercent(num) {
 var tablesToExcel = (function () {
 	var uri = 'data:application/vnd.ms-excel;base64,'
 		, html_start = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">`
-		, worksheet_options = `<x:WorksheetOptions><x:Print><x:ValidPrinterInfo /><x:PaperSizeIndex>9</x:PaperSizeIndex><x:HorizontalResolution>600</x:HorizontalResolution><x:VerticalResolution>600</x:VerticalResolution></x:Print><x:Selected /><x:DoNotDisplayGridlines /><x:ProtectContents>False</x:ProtectContents><x:ProtectObjects>False</x:ProtectObjects><x:ProtectScenarios>False</x:ProtectScenarios></x:WorksheetOptions>`
+		, worksheet_options = `<x:WorksheetOptions><x:Print><x:ValidPrinterInfo/><x:HorizontalResolution>1200</x:HorizontalResolution><x:VerticalResolution>1200</x:VerticalResolution><x:Scale>70</x:Scale></x:Print><x:Selected/><x:DoNotDisplayGridlines/><x:ProtectContents>False</x:ProtectContents><x:ProtectObjects>False</x:ProtectObjects><x:ProtectScenarios>False</x:ProtectScenarios></x:WorksheetOptions>`
+		, workbook_settings = `<x:WindowHeight>12780</x:WindowHeight><x:WindowWidth>19035</x:WindowWidth><x:WindowTopX>0</x:WindowTopX><x:WindowTopY>15</x:WindowTopY><x:ProtectStructure>False</x:ProtectStructure><x:ProtectWindows>False</x:ProtectWindows>`
 		, template_ExcelWorksheet = `<x:ExcelWorksheet><x:Name>{SheetName}</x:Name><x:WorksheetSource HRef="sheet{SheetIndex}.htm"/>` + worksheet_options + `</x:ExcelWorksheet>`
 		, template_ListWorksheet = `<o:File HRef="sheet{SheetIndex}.htm"/>`
 		, template_HTMLWorksheet = `
@@ -460,8 +461,8 @@ Content-Type: text/html; charset=windows-1252
 <!--[if gte mso 9]><xml>
 <x:ExcelWorkbook>
 <x:ExcelWorksheets>{ExcelWorksheets}</x:ExcelWorksheets>
-<x:ActiveSheet>0</x:ActiveSheet>
-</x:ExcelWorkbook>
+<x:ActiveSheet>0</x:ActiveSheet>` + workbook_settings +
+`</x:ExcelWorkbook>
 </xml><![endif]-->
 </head>
 <frameset>
