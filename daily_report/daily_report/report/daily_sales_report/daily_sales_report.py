@@ -318,6 +318,8 @@ def get_columns(filters):
             "convertible": "qty",
             "width": 90,
         },
+        {"label": _("Date"), "fieldname": "date2", "fieldtype": "Date", "width": 90},
+        {"label": _("Day"), "fieldname": "day2", "fieldtype": "String", "width": 90},
         {
             "label": _("# of Invoices(" + month_short + ", " + str(prevyr) + ")"),
             "fieldname": "noofinv2",
