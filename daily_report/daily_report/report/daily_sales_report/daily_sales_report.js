@@ -130,7 +130,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 		}
 		else if (colfldname=='grossmtd2' && _use_gross_profit_mtd) {
 			colmnth= 'Gross % MTD'
-			dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			dynhtml+='<td width="125" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='sales') {
 			dynhtml+='<td width="130" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
@@ -146,16 +146,16 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 			dynhtml+='<td width="85" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='grossmtd' && _use_gross_profit_mtd) {
-			dynhtml+='<td width="130" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			dynhtml+='<td width="125" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='date') {
 			dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;font-style: italic;">'+(colmnth).toString()+'</td>';
 		}
 		else if (colfldname=='day') {
-			dynhtml+='<td width="120" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			dynhtml+='<td width="115" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		} 
 		else if (colfldname=='day2') {
-			dynhtml+='<td width="120" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
+			dynhtml+='<td width="115" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
 		}
 	}
 	dynhtml+='</tr>';
@@ -180,7 +180,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 
 	// Generate year totals at the bottom of the table
 	var grossmar = formatAsPercent(grossmarlast)
-	dynhtml+=`<tr><td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
+	dynhtml+=`<tr><td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
 	dynhtml+='<tr />';
 	dynhtml+='<tr>';
 	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales   ' + '</td>';
@@ -292,12 +292,14 @@ function row_celldynFunc(datalist){
 		style: "currency",
 		currency: "CAD",
 		useGrouping: true,
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
 	});
 	let amountFormatter = Intl.NumberFormat("en-CA", {
 		style: "decimal",
 		useGrouping: true,
-		minimumFractionDigits: 2,
-	    maximumFractionDigits: 2,
+		minimumFractionDigits: 0,
+	    maximumFractionDigits: 0,
 	});
 
 	var left_border = 'border-left: 1px solid #89898d;';
@@ -313,7 +315,7 @@ function row_celldynFunc(datalist){
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
 			html+=`<td style="text-align: center; font-family: Calibri; font-size: 10pt; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
-			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+row_data.day+`</td>`;
+			html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt;">`+row_data.day+`</td>`;
 			html+=`<td style="text-align: center;font-family: Calibri; font-size: 10pt;">`+row_data.noofinv+`</td>`;
 			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+amountFormatter.format(row_data.sales)+`</td>`;
 			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
@@ -326,7 +328,7 @@ function row_celldynFunc(datalist){
 		curr_year_html.push(html);
 
 		html = ``;
-		html+=`<td style="font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.day2+`</td>`;
+		html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.day2+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.noofinv2+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+amountFormatter.format(row_data.sales2)+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
