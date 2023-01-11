@@ -185,7 +185,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	dynhtml+=`<tr><td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
 	dynhtml+='<tr />';
 	dynhtml+='<tr>';
-	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales' + '</td>';
+	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + 'Last Year Actual Sales' + '</td>';
     dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
     dynhtml+='</tr>';
 	dynhtml+='<tr>';
