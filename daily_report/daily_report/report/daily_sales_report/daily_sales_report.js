@@ -189,7 +189,7 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
     dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
     dynhtml+='</tr>';
 	dynhtml+='<tr>';
-	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Margin' + '</td>';
+	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + 'Last Year Actual Margin' + '</td>';
     dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + grossmar +  '</td>';
 	dynhtml+='</tr>';
 	dynhtml+='</table>';
