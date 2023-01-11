@@ -169,13 +169,15 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 
 	for(var index = 0; index < datalist.length; index++) {	
 		prevyrsalessum += datalist[index].sales2
-		grossmarlast = 	datalist[index].grossmtd2
+		grossmarlast = datalist[index].grossmtd2
 	}
 
 	let dollarCAD = Intl.NumberFormat("en-CA", {
 		style: "currency",
 		currency: "CAD",
 		useGrouping: true,
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
 	});
 
 	// Generate year totals at the bottom of the table
@@ -183,12 +185,12 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	dynhtml+=`<tr><td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
 	dynhtml+='<tr />';
 	dynhtml+='<tr>';
-	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales   ' + '</td>';
-    dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
+	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Sales' + '</td>';
+    dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
     dynhtml+='</tr>';
 	dynhtml+='<tr>';
-	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Margin  ' + '</td>';
-    dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + grossmar +  '</td>';
+	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="3"> ' + "&nbsp;" + 'Last Year Actual Margin' + '</td>';
+    dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + grossmar +  '</td>';
 	dynhtml+='</tr>';
 	dynhtml+='</table>';
 
@@ -328,7 +330,7 @@ function row_celldynFunc(datalist){
 		curr_year_html.push(html);
 
 		html = ``;
-		html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.day2+`</td>`;
+		html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt;">`+row_data.day2+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.noofinv2+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+amountFormatter.format(row_data.sales2)+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
