@@ -297,12 +297,6 @@ function row_celldynFunc(datalist){
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 0,
 	});
-	let amountFormatter = Intl.NumberFormat("en-CA", {
-		style: "decimal",
-		useGrouping: true,
-		minimumFractionDigits: 0,
-	    maximumFractionDigits: 0,
-	});
 
 	var left_border = 'border-left: 1px solid #89898d;';
 	var right_border = 'border-right: 1px solid #89898d;';
@@ -319,7 +313,7 @@ function row_celldynFunc(datalist){
 			html+=`<td style="text-align: center; font-family: Calibri; font-size: 10pt; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
 			html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt;">`+row_data.day+`</td>`;
 			html+=`<td style="text-align: center;font-family: Calibri; font-size: 10pt;">`+row_data.noofinv+`</td>`;
-			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+amountFormatter.format(row_data.sales)+`</td>`;
+			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.sales)+`</td>`;
 			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
 			html+=`<td style="font-family: Calibri; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
 			html+=_use_gross_profit_mtd ? `<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
@@ -332,7 +326,7 @@ function row_celldynFunc(datalist){
 		html = ``;
 		html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt;">`+row_data.day2+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.noofinv2+`</td>`;
-		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+amountFormatter.format(row_data.sales2)+`</td>`;
+		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.sales2)+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
 		html+=`<td style="font-family: Calibri; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
 		html+=_use_gross_profit_mtd ? `<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
@@ -363,12 +357,6 @@ function row_celldynFunc2(datalist, costcentlst){
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 0,
 	});
-	let amountFormatter = Intl.NumberFormat("en-CA", {
-		style: "decimal",
-		useGrouping: true,
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0,
-	});
 
 	// Iterate through each data row
 	for(var index = 0; index < datalist.length; index++) {
@@ -391,7 +379,7 @@ function row_celldynFunc2(datalist, costcentlst){
 				var col5 = 'grossmtdcstcnt' + cnt
 				
 				celldynhtml+=`<td style="text-align: center;font-family: Calibri; font-size: 10pt; ${left_border}">`+row_data[col1]+'</td>';
-				celldynhtml+='<td style="font-family: Calibri; font-size: 10pt;">'+amountFormatter.format(row_data[col2])+'</td>';
+				celldynhtml+='<td style="font-family: Calibri; font-size: 10pt;">'+dollarCAD.format(row_data[col2])+'</td>';
 				celldynhtml+='<td style="font-family: Calibri; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
 				celldynhtml+=`<td style="font-family: Calibri; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
 				celldynhtml+=_use_gross_profit_mtd ? `<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
