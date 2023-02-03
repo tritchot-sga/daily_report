@@ -3,7 +3,8 @@
 /* eslint-disable */
 
 // Determines whether or not the gross profit MTD should be displayed. Adjusts the spreadsheet to account for the columns absence/presence.
-_use_gross_profit_mtd = true;
+var _use_gross_profit_mtd = true;
+var _is_first_run = true;
 
 const _months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -47,8 +48,14 @@ frappe.query_reports["Daily Sales Report"] = {
 	],
 	onload: function(report) {		
 		report.page.add_inner_button(__("Export Report"), function() {			
-			debugger
 			let filters = report.get_values();	
+
+			// Avoid the issue of the report not using the correct date on subsequent runs.
+			if (!_is_first_run) {
+				frappe.msgprint("Please refresh the page before running this report again.");
+				return;
+			}
+			_is_first_run = false;
 			
 			var start_time = new Date();
 			frappe.show_progress('Generating Report...', 0, 1, `Gathering data...Please wait.`);
@@ -81,13 +88,10 @@ frappe.query_reports["Daily Sales Report"] = {
 	},	
 };
 
-function dynamic_exportcontent(cnt_list,company,fmonth,fyear){	
+function dynamic_exportcontent(cnt_list, company, fmonth, fyear){	
 	var dynhtml="";
-	dynhtml='<div id="dvData">';
 	var totlcnt=[];
-	var $crntid="exprtid_1";
-	totlcnt[0]="#"+$crntid;
-
+	
 	var titlelist = cnt_list[0]
 	var datalist = cnt_list[1][0]
 	var datalist2 = cnt_list[1][1]
@@ -96,103 +100,15 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	//==================================================
 	// TABLE - CONSOLIDATED DAILY SALES
 	//==================================================
+	var $crntid="exprtid_1";
+	totlcnt[0]="#"+$crntid;
 
-	// Generate the table title
-	dynhtml+='<table style= "font-family: Calibri; font-size: 10pt;" id='+$crntid+'>';
-	dynhtml+='<caption style="text-align: left;"><span style="font-weight: bold;text-align: left;font-family: Calibri; font-size: 10pt;">Sales Statistics For '+company+'</br></span><span style="font-family: Calibri; font-size: 10pt; font-weight: normal;text-align: left;">'+ 'Month: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + fmonth + '-' + fyear +'</span><caption>';	
-	dynhtml+='<tr style="height:5px;"><td>&nbsp;</td></tr>';
-    dynhtml+='<tr>';
-	dynhtml+=`<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Calibri; font-size: 10pt;" colspan="${_use_gross_profit_mtd ? '7' : '6'}"> ` + "&nbsp;" + fmonth + ' ' + fyear + '</span></th>';
-    dynhtml+=`<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Calibri; font-size: 10pt;" colspan="${_use_gross_profit_mtd ? '6' : '5'}"> `+ "&nbsp;" + fmonth + ' ' + (parseInt(fyear) - 1).toString()+'</th>';
-	dynhtml+='</tr>';
-
-	// Generate the table headers for each cost center
-	dynhtml+='<tr>';
-	for(var cnt=0; cnt < titlelist.length; cnt++) 
-	{					
-		var colmnth= titlelist[cnt].label.toString();
-		var colfldname = titlelist[cnt].fieldname.toString();
-		if (colfldname=='noofinv2') {
-			colmnth= "# Inv.'s"
-			dynhtml+='<td width="80" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='sales2') {
-			colmnth= 'Sales'
-			dynhtml+='<td width="130" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='salesmtd2') {
-			colmnth= 'Sales MTD'
-			dynhtml+='<td width="145" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='gross2') {
-			colmnth= 'Gross %'
-			dynhtml+='<td width="100" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='grossmtd2' && _use_gross_profit_mtd) {
-			colmnth= 'Gross % MTD'
-			dynhtml+='<td width="125" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='sales') {
-			dynhtml+='<td width="130" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='salesmtd') {
-			dynhtml+='<td width="145" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='noofinv') {
-			colmnth= "# Inv.'s"
-			dynhtml+='<td width="80" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='gross') {
-			dynhtml+='<td width="85" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='grossmtd' && _use_gross_profit_mtd) {
-			dynhtml+='<td width="125" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='date') {
-			dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;font-style: italic;">'+(colmnth).toString()+'</td>';
-		}
-		else if (colfldname=='day') {
-			dynhtml+='<td width="115" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		} 
-		else if (colfldname=='day2') {
-			dynhtml+='<td width="115" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-		}
-	}
-	dynhtml+='</tr>';
-
-	// Populate the table rows
-	dynhtml+=row_celldynFunc(datalist);
-
-	// Calculate previous year cumulative values
-	var prevyrsalessum = 0
-	var grossmarlast = 0.0
-
-	for(var index = 0; index < datalist.length; index++) {	
-		prevyrsalessum += datalist[index].sales2
-		grossmarlast = datalist[index].grossmtd2
-	}
-
-	let dollarCAD = Intl.NumberFormat("en-CA", {
-		style: "currency",
-		currency: "CAD",
-		useGrouping: true,
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0,
-	});
-
-	// Generate year totals at the bottom of the table
-	var grossmar = formatAsPercent(grossmarlast)
-	dynhtml+=`<tr><td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" /><td style="border-bottom: 1px solid #89898d;" />${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}<td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;" /></tr>`;
-	dynhtml+='<tr />';
-	dynhtml+='<tr>';
-	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + 'Last Year Actual Sales' + '</td>';
-    dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + dollarCAD.format(prevyrsalessum) +  '</td>';
-    dynhtml+='</tr>';
-	dynhtml+='<tr>';
-	dynhtml+='<td style="text-align: left;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + 'Last Year Actual Margin' + '</td>';
-    dynhtml+='<td style="text-align: right;border: 0px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + grossmar +  '</td>';
-	dynhtml+='</tr>';
-	dynhtml+='</table>';
+	dynhtml += `<div id="dvData">`;
+	dynhtml += `<table id=${$crntid}>`;
+	dynhtml += generate_headers(titlelist, company, fmonth, fyear);
+	dynhtml += populate_consolidated(datalist);
+	dynhtml += generate_table_end(titlelist);
+	dynhtml += '</table>';
 
 	//==================================================
 	// TABLE - DAILY SALES BY COST CENTER
@@ -200,90 +116,127 @@ function dynamic_exportcontent(cnt_list,company,fmonth,fyear){
 	var $crntid2="exprtid_2";
 	totlcnt[1]="#"+$crntid2;
 
-	// Generate title
-	dynhtml+='<table style= "font-family: Calibri; font-size: 10pt;" id='+$crntid2+'>';
-	dynhtml+='<caption style="text-align: left;"><span style="font-weight: bold;text-align: left;font-family: Calibri; font-size: 10pt;">Sales Statistics For '+company+' by Cost Center</br></span><span style="font-family: Calibri; font-size: 10pt; font-weight: normal;text-align: left;">'+ 'Month: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + fmonth + '-' + fyear +'</span><caption>';	
-	dynhtml+='<tr><td>&nbsp;</td></tr>';
-
-	// Generate table headers
-	dynhtml+='<tr>';
-	dynhtml+='<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;Cost Center : " + '</span></th>';
-	for(var cnt=0; cnt < datacostcntlist3.length; cnt++) 
-	{
-		var costcntcoltitle= datacostcntlist3[cnt];
-		dynhtml+=`<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Calibri; font-size: 10pt;" colspan="${_use_gross_profit_mtd ? '5' : '4'}"> ` + "&nbsp;" + costcntcoltitle + '</span></th>';
-	}
-	dynhtml+='</tr>';
-
-    dynhtml+='<tr>';
-	dynhtml+='<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Calibri; font-size: 10pt;" colspan="2"> ' + "&nbsp;" + '</span></th>';
-	for(var cnt=0; cnt < datacostcntlist3.length; cnt++) 
-	{
-		dynhtml+=`<th style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-style: italic;font-family: Calibri; font-size: 10pt;" colspan="${_use_gross_profit_mtd ? '5' : '4'}"> ` + "&nbsp;" + fmonth + ' ' + fyear + '</span></th>';
-	}
-	dynhtml+='</tr>';
-
-	dynhtml+='<tr>';
-	dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;font-style: italic;">Date</td>';
-	dynhtml+='<td width="120" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">Day</td>';
-	for(var cnt0=0; cnt0 < datacostcntlist3.length; cnt0++) 
-	{
-		for(var cnt=2; cnt < titlelist.length; cnt++) 
-	 	{					
-			var colmnth= titlelist[cnt].label.toString();
-			var colfldname = titlelist[cnt].fieldname.toString();
-
-			if (colfldname=='sales') {
-				dynhtml+='<td width="135" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-			}
-			else if (colfldname=='salesmtd') {
-				dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-			}
-			else if (colfldname=='noofinv') {
-				colmnth= "# Inv.'s"
-				dynhtml+='<td width="80" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-			}
-			else if (colfldname=='gross') {
-				dynhtml+='<td width="100" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-			}
-			else if (colfldname=='grossmtd' && _use_gross_profit_mtd) {
-				dynhtml+='<td width="150" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-			}
-			else if (colfldname=='date') {
-				dynhtml+='<td width="110" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;font-style: italic;">'+(colmnth).toString()+'</td>';
-			}
-			else if (colfldname=='day') {
-					dynhtml+='<td width="120" style="text-align: center;border: 1px solid #89898d;font-weight: bold;font-family: Calibri; font-size: 10pt;">'+(colmnth).toString()+'</td>';
-			} 
-		}		
-	}
-	dynhtml+='</tr>';
-
-	// Populate table data
-	dynhtml += row_celldynFunc2(datalist2,datacostcntlist3)
-
-	// Close off the bottom of the table.
-	dynhtml+='<tr>'
-	dynhtml+='<td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;"></td><td style="border-bottom: 1px solid #89898d;"></td>'
-	for(var cnt=0; cnt < datacostcntlist3.length; cnt++) 
-	{
-		dynhtml+=`<td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" />
-				  <td style="border-bottom: 1px solid #89898d;" />
-				  <td style="border-bottom: 1px solid #89898d;" />
-				  ${_use_gross_profit_mtd ? '<td style="border-bottom: 1px solid #89898d;" />' : ''}
-				  <td style="border-bottom: 1px solid #89898d;border-right: 1px solid #89898d;"></td>`
-	}
-	dynhtml+='</tr>'
-	dynhtml+='<tr></tr><tr></tr><tr></tr><tr></tr>';
-	dynhtml+='</table></div>';
+	// Generate headers
+	dynhtml += `<table id=${$crntid2}>`;
+	dynhtml += generate_headers(titlelist, company, fmonth, fyear, datacostcntlist3)
+	dynhtml += populate_cost_center(datalist2, datacostcntlist3)
+	dynhtml += generate_table_end(titlelist, datacostcntlist3)
+	dynhtml += '</table>';
+	dynhtml += '</div>';
 
 	$(".report-wrapper").hide();
 	$(".report-wrapper").append(dynhtml);	
 	tablesToExcel(totlcnt, 'SalesDailyReport.xls')
 }
 
+// Generates the header and title rows for both the consolidated and cost center tabs
+function generate_headers(titlelist, company, fmonth, fyear, cost_centers = null) {
+	var html = '';
+
+	// This is a really hacky way of getting the tables to print nicely.
+	// This gets the cost center tables to be very slightly wider to account
+	// for an extra column on the consolidated tab.
+	var width_factor = (cost_centers != null ? 1.05 : 1)
+
+	// Generate the table title
+	// On the cost center tab, this will appear for every 2 data sets.
+	var col_count = titlelist.length - (_use_gross_profit_mtd ? 0 : 1);
+	var col_span = (col_count * 2) - 2;
+	var company_title = '';
+	var month_tile = '';
+	for (var i = 0; i < (cost_centers == null ? 2 : cost_centers.length); i++) {
+		if (i % 2 == 0) {
+			company_title += `<td style="text-align: left; font-weight: bold;" colspan="${col_span}">Sales Statistics For ${company}</td>`;
+			month_tile += `<td style="text-align: left; font-weight: normal;" colspan="${col_span}">Month: ${fmonth}&nbsp${fyear}</td>`;	
+		}
+	}
+
+	html += `<tr>${company_title}</tr><tr>${month_tile}</tr><tr />`;
+	
+	// Generate primary headers for each cost center
+	if (cost_centers != null) {
+		var col_count = titlelist.length - 2 - (_use_gross_profit_mtd ? 0 : 1)
+		var cc_row = '';
+		var month_row = '';
+
+		for(var i = 0; i < cost_centers.length; i++) {
+			if (i % 2 == 0) {
+				cc_row += '<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="2">Cost Center :</th>';
+				month_row += '<th style="border: 1px solid #89898d;" colspan="2"></th>';
+			}
+
+			cc_row +=`<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${cost_centers[i]}</th>`;
+			month_row +=`<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${fmonth}&nbsp${fyear}</th>`;
+		}
+
+		html += `<tr>${cc_row}</tr><tr>${month_row}</tr>`;
+	} else {
+		html += '<tr>';
+		html += `<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${fmonth}&nbsp${fyear}</th>`;
+		html += `<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count - 1}">${fmonth}&nbsp${parseInt(fyear) - 1}</th>`;
+		html += '</tr>';
+	}
+	
+	// Generate the sub-headers for each cost center
+	html += '<tr>';
+	for (var i = 0; i < (cost_centers == null ? 2 : cost_centers.length); i++) {
+		
+		// For every 2 data sets, add the date/day columns
+		if (i % 2 == 0) {
+			for(var j = 0; j < 2; j++) {
+				html += `<td width="${titlelist[j].width * width_factor}" style="text-align: ${titlelist[j].alignment}; 
+					border: 1px solid #89898d; font-weight: bold;">${titlelist[j].label}</td>`;
+			}
+		} else if (cost_centers == null) {
+			// For the consolidated report, repeat the "Day" column for the second data
+			html += `<td width="${titlelist[1].width * width_factor}" style="text-align: ${titlelist[1].alignment}; 
+				border: 1px solid #89898d; font-weight: bold;">${titlelist[1].label}</td>`;
+		}
+
+		// Add the rest of the columns
+		for(var j = 2; j < titlelist.length; j++) {
+			if (titlelist[j].fieldname != "grossmtd" || _use_gross_profit_mtd) {
+				html += `<td width="${titlelist[j].width * width_factor}" style="text-align: ${titlelist[j].alignment}; 
+					border: 1px solid #89898d; font-weight: bold;">${titlelist[j].label}</td>`;
+			}
+		}
+	}
+
+	html += '</tr>';
+	return html;
+}
+
+// Generates the end rows for the tables
+function generate_table_end(titlelist, cost_centers = null) {
+	html = '';
+
+	// Generate the table ends for each cost center
+	html += '<tr>';
+	for (var i = 0; i < (cost_centers == null ? 2 : cost_centers.length); i++) {
+		
+		// For every 2 data sets, add the date/day column ends
+		if (i % 2 == 0) {
+			html += `<td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" />
+						<td style="border-bottom: 1px solid #89898d; ${cost_centers != null ? "border-right: 1px solid #89898d;" : ""}" />`;
+		} else if (cost_centers == null) {
+			// For the consolidated report, repeat the "Day" column end for the second data
+			html += `<td style="border-left: 1px solid #89898d; border-bottom: 1px solid #89898d;" />`;
+		}
+
+		// Add the rest of the columns
+		var col_count = titlelist.length - 2 - (_use_gross_profit_mtd ? 0 : 1)
+		for(var j = 0; j < col_count; j++) {
+			html += `<td style="border-bottom: 1px solid #89898d; ${j == 0 && cost_centers != null ? "border-left: 1px solid #89898d;" : ""} 
+				${j == col_count - 1 ? "border-right: 1px solid #89898d;" : ""}" />`;
+		}
+	}
+
+	html += '</tr>';
+	return html;
+}
+
 // Generates an html data row using consolidated cost center data.
-function row_celldynFunc(datalist){	
+function populate_consolidated(datalist){	
 	celldynhtml=``;
 
 	curr_year_html = [];
@@ -310,13 +263,13 @@ function row_celldynFunc(datalist){
 
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
-			html+=`<td style="text-align: center; font-family: Calibri; font-size: 10pt; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
-			html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt;">`+row_data.day+`</td>`;
-			html+=`<td style="text-align: center;font-family: Calibri; font-size: 10pt;">`+row_data.noofinv+`</td>`;
-			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.sales)+`</td>`;
-			html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
-			html+=`<td style="font-family: Calibri; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
-			html+=_use_gross_profit_mtd ? `<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
+			html+=`<td style="text-align: center;   ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
+			html+=`<td style="text-align: left;">`+row_data.day+`</td>`;
+			html+=`<td style="text-align: center;">`+row_data.noofinv+`</td>`;
+			html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.sales)+`</td>`;
+			html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
+			html+=`<td style="text-align: center; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
+			html+=_use_gross_profit_mtd ? `<td style="text-align: center; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
 		} else {
 			html+= curr_year_blank;
 		}
@@ -324,12 +277,12 @@ function row_celldynFunc(datalist){
 		curr_year_html.push(html);
 
 		html = ``;
-		html+=`<td style="text-align: left; font-family: Calibri; font-size: 10pt;">`+row_data.day2+`</td>`;
-		html+=`<td style="font-family: Calibri; font-size: 10pt; text-align: center;">`+row_data.noofinv2+`</td>`;
-		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.sales2)+`</td>`;
-		html+=`<td style="font-family: Calibri; font-size: 10pt;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
-		html+=`<td style="font-family: Calibri; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
-		html+=_use_gross_profit_mtd ? `<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
+		html+=`<td style="text-align: left;">`+row_data.day2+`</td>`;
+		html+=`<td style="text-align: center;">`+row_data.noofinv2+`</td>`;
+		html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.sales2)+`</td>`;
+		html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
+		html+=`<td style="text-align: center; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
+		html+=_use_gross_profit_mtd ? `<td style="text-align: center; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
 
 		prev_year_html.push(html);
 	}
@@ -346,7 +299,7 @@ function row_celldynFunc(datalist){
 }
 
 // Generates an html data row using data for each cost center.
-function row_celldynFunc2(datalist, costcentlst){	
+function populate_cost_center(datalist, costcentlst){	
 	celldynhtml="";
 
 	const options = { year: 'numeric', month: 'short', day: 'numeric' }
@@ -368,27 +321,34 @@ function row_celldynFunc2(datalist, costcentlst){
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
 			celldynhtml+='<tr>';
-			celldynhtml+=`<td style="text-align: center; font-family: Calibri; font-size: 10pt; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
-			celldynhtml+=`<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+row_data.day+'</td>';
 			for(var cnt=0; cnt < costcentlst.length; cnt++) 
 			{
+				// Add the dates for every 2 data sets
+				if (cnt % 2 == 0) {
+					celldynhtml+=`<td style="text-align: center; ${left_border}">`+new Date(row_data.date).toLocaleDateString('en-CA', options)+'</td>';
+					celldynhtml+=`<td style="${right_border}">`+row_data.day+'</td>';
+				}
+
 				var col1 = 'noofinvcstcnt' + cnt
 				var col2 = 'salescstcnt' + cnt
 				var col3 = 'salesmtdcstcnt' + cnt
 				var col4 = 'grosscstcnt' + cnt
 				var col5 = 'grossmtdcstcnt' + cnt
 				
-				celldynhtml+=`<td style="text-align: center;font-family: Calibri; font-size: 10pt; ${left_border}">`+row_data[col1]+'</td>';
-				celldynhtml+='<td style="font-family: Calibri; font-size: 10pt;">'+dollarCAD.format(row_data[col2])+'</td>';
-				celldynhtml+='<td style="font-family: Calibri; font-size: 10pt;">'+dollarCAD.format(row_data[col3])+'</td>';
-				celldynhtml+=`<td style="font-family: Calibri; font-size: 10pt; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
-				celldynhtml+=_use_gross_profit_mtd ? `<td style="font-family: Calibri; font-size: 10pt; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
+				celldynhtml+=`<td style="text-align: center; ${left_border}">`+row_data[col1]+'</td>';
+				celldynhtml+='<td style="text-align: center;">'+dollarCAD.format(row_data[col2])+'</td>';
+				celldynhtml+='<td style="text-align: center;">'+dollarCAD.format(row_data[col3])+'</td>';
+				celldynhtml+=`<td style="text-align: center; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
+				celldynhtml+=_use_gross_profit_mtd ? `<td style="text-align: center; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
 			}
 			celldynhtml+='</tr>';
 		} else {
 			celldynhtml+='<tr>';
-			celldynhtml+=`<td style="${left_border}" /><td style="${right_border}" />`;
 			for(var cnt=0; cnt < costcentlst.length; cnt++) {
+				// Add blank spots for the dates for every 2 data sets
+				if (cnt % 2 == 0) {
+					celldynhtml+=`<td style="${left_border}" /><td style="${right_border}" />`;
+				}
 				celldynhtml += `<td style="${left_border}" /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
 			}
 			celldynhtml+='</tr>';
@@ -434,10 +394,18 @@ Content-Type: text/html; charset=windows-1252
 <link rel="File-List" href="filelist.xml">
 <style>
 	@page {
-		margin:.25in .25in .25in .25in;
+		margin-top:.5in;
+		margin-left:.25in;
+		margin-bottom:.25in;
+		margin-right:.025in;
 		mso-header-margin:.025in;
 		mso-footer-margin:.025in;
 		mso-page-orientation:landscape;
+	}
+	td {
+		font-family:Calibri; 
+		font-size:10pt;
+		vertical-align: middle;
 	}
 </style>
 </head>

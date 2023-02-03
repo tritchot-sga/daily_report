@@ -57,14 +57,14 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
 
     cstcnt0 = frappe.db.get_list("Cost Center",pluck='name',filters={'company': filters.get("company"),'is_group':0})
     # change the order of cost center this is customized for this client
-    #specify order here 02, 03, 01, 06
+    # specify order here 02, 03, 01, 06
     if filters.cost_center:
         cstcnt0.clear()
         ccc = filters.cost_center
         for cc in ccc:
             cstcnt0.append(cc)
 
-    cstorder = ['02', '03', '06', '01']
+    cstorder = ['02', '03', '01', '06']
     
     i = 0
     while(i<len(cstorder)):
@@ -274,20 +274,16 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
 
 
 def get_columns(filters):
-    long_month_name = filters.get("month")
-    curyr = filters.get("year")
-    prevyr = int(curyr) - 1
-    datetime_object = datetime.datetime.strptime(long_month_name, "%B")
-    month_short = datetime_object.strftime("%b")
     columns = [
-        {"label": _("Date"), "fieldname": "date", "fieldtype": "Date", "width": 90},
-        {"label": _("Day"), "fieldname": "day", "fieldtype": "String", "width": 90},
+        {"label": _("Date"), "fieldname": "date", "fieldtype": "Date", "width": 90, "alignment": "center"},
+        {"label": _("Day"), "fieldname": "day", "fieldtype": "String", "width": 110, "alignment": "left"},
         {
-            "label": _("# of Invoices"),
-            "fieldname": "noofinv",
+            "label": _("Invoices"),
+            "fieldname": "invoices",
             "fieldtype": "Integer",
             "width": 80,
             "convertible": "qty",
+            "alignment": "center",
         },
         {
             "label": _("Sales"),
@@ -295,67 +291,32 @@ def get_columns(filters):
             "fieldtype": "Currency",
             "options": "Company:company:default_currency",
             "convertible": "rate",
-            "width": 160,
+            "width": 125,
+            "alignment": "left",
         },
         {
             "label": _("Sales MTD"),
             "fieldname": "salesmtd",
             "fieldtype": "Currency",
             "options": "Company:company:default_currency",
-            "width": 160,
+            "width": 125,
+            "alignment": "left",
         },
         {
             "label": _("Gross %"),
             "fieldname": "gross",
             "fieldtype": "Float",
             "convertible": "qty",
-            "width": 90,
+            "width": 125,
+            "alignment": "center",
         },
         {
             "label": _("Gross % MTD"),
             "fieldname": "grossmtd",
             "fieldtype": "Float",
             "convertible": "qty",
-            "width": 90,
-        },
-        {"label": _("Date"), "fieldname": "date2", "fieldtype": "Date", "width": 90},
-        {"label": _("Day"), "fieldname": "day2", "fieldtype": "String", "width": 90},
-        {
-            "label": _("# of Invoices(" + month_short + ", " + str(prevyr) + ")"),
-            "fieldname": "noofinv2",
-            "fieldtype": "Integer",
-            "width": 80,
-            "convertible": "qty",
-        },
-        {
-            "label": _("Sales( " + month_short + ", " + str(prevyr) + ")"),
-            "fieldname": "sales2",
-            "fieldtype": "Currency",
-            "options": "Company:company:default_currency",
-            "convertible": "rate",
-            "width": 160,
-        },
-        {
-            "label": _("Sales MTD( "+ month_short + ", " + str(prevyr) + ")"),
-            "fieldname": "salesmtd2",
-            "fieldtype": "Currency",
-            "options": "Company:company:default_currency",
-            "convertible": "rate",
-            "width": 160,
-        },
-        {
-            "label": _("Gross % (" + month_short + ", " + str(prevyr) + ")"),
-            "fieldname": "gross2",
-            "fieldtype": "Float",
-            "convertible": "qty",
-            "width": 90,
-        },
-        {
-            "label": _("Gross % (" + month_short + ", " + str(prevyr) + ")"),
-            "fieldname": "grossmtd2",
-            "fieldtype": "Float",
-            "convertible": "qty",
-            "width": 90,
+            "width": 125,
+            "alignment": "center",
         },
     ]
 
