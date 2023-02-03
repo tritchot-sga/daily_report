@@ -488,6 +488,9 @@ Content-Type: text/xml; charset="utf-8"
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+
+		// Reload the page automatically after generating the report.
+		window.location.reload();
 	}
 })();
 
