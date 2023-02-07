@@ -307,7 +307,7 @@ def get_columns(filters):
             "fieldname": "gross",
             "fieldtype": "Float",
             "convertible": "qty",
-            "width": 125,
+            "width": 100,
             "alignment": "center",
         },
         {
