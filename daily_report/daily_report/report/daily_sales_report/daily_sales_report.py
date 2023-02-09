@@ -64,6 +64,8 @@ def get_corrdataingplistwithcstcnt(lstdata,workdaysinmth,lastwkdayincurrper,filt
         for cc in ccc:
             cstcnt0.append(cc)
 
+    # Set display order
+    # This isn't ideal. This report is supposed to apply to all companies, and this is a site-specific configuration.
     cstorder = ['02', '03', '01', '06']
     
     i = 0
@@ -292,7 +294,7 @@ def get_columns(filters):
             "options": "Company:company:default_currency",
             "convertible": "rate",
             "width": 125,
-            "alignment": "left",
+            "alignment": "right",
         },
         {
             "label": _("Sales MTD"),
@@ -300,14 +302,14 @@ def get_columns(filters):
             "fieldtype": "Currency",
             "options": "Company:company:default_currency",
             "width": 125,
-            "alignment": "left",
+            "alignment": "right",
         },
         {
             "label": _("Gross %"),
             "fieldname": "gross",
             "fieldtype": "Float",
             "convertible": "qty",
-            "width": 100,
+            "width": 90,
             "alignment": "center",
         },
         {

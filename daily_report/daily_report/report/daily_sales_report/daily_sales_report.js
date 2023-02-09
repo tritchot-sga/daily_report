@@ -6,6 +6,9 @@
 var _use_gross_profit_mtd = true;
 var _is_first_run = true;
 
+// Data acquired from the server side.
+var _titlelist, _datalist, _datalist2, _datacostcntlist3, _company, _fmonth, _fyear;
+
 const _months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 frappe.query_reports["Daily Sales Report"] = {
@@ -70,7 +73,19 @@ frappe.query_reports["Daily Sales Report"] = {
 					$(".report-wrapper").html("");					
 					$(".justify-center").remove()
 					if(r.message[1] != ""){
-						dynamic_exportcontent(r.message,filters.company,filters.month,filters.year)
+						
+						// Some some global vars
+						_company = filters.company;
+						_fmonth = filters.month;
+						_fyear = filters.year;
+
+						_titlelist = r.message[0];
+						_datalist = r.message[1][0];
+						_datalist2 = r.message[1][1];
+						_datacostcntlist3 = r.message[1][2];
+
+						// Start the report generation
+						generate_report()
 						
 						// Total execution time for display
 						var total_time = ((new Date()).getTime() - start_time.getTime()) / 1000;
@@ -88,14 +103,9 @@ frappe.query_reports["Daily Sales Report"] = {
 	},	
 };
 
-function dynamic_exportcontent(cnt_list, company, fmonth, fyear){	
+function generate_report(){	
 	var dynhtml="";
 	var totlcnt=[];
-	
-	var titlelist = cnt_list[0]
-	var datalist = cnt_list[1][0]
-	var datalist2 = cnt_list[1][1]
-	var datacostcntlist3 = cnt_list[1][2]
 
 	//==================================================
 	// TABLE - CONSOLIDATED DAILY SALES
@@ -105,9 +115,9 @@ function dynamic_exportcontent(cnt_list, company, fmonth, fyear){
 
 	dynhtml += `<div id="dvData">`;
 	dynhtml += `<table id=${$crntid}>`;
-	dynhtml += generate_headers(titlelist, company, fmonth, fyear);
-	dynhtml += populate_consolidated(datalist);
-	dynhtml += generate_table_end(titlelist);
+	dynhtml += generate_headers();
+	dynhtml += populate_consolidated();
+	dynhtml += generate_table_end();
 	dynhtml += '</table>';
 
 	//==================================================
@@ -118,9 +128,9 @@ function dynamic_exportcontent(cnt_list, company, fmonth, fyear){
 
 	// Generate headers
 	dynhtml += `<table id=${$crntid2}>`;
-	dynhtml += generate_headers(titlelist, company, fmonth, fyear, datacostcntlist3)
-	dynhtml += populate_cost_center(datalist2, datacostcntlist3)
-	dynhtml += generate_table_end(titlelist, datacostcntlist3)
+	dynhtml += generate_headers(_datacostcntlist3)
+	dynhtml += populate_cost_center()
+	dynhtml += generate_table_end(_datacostcntlist3)
 	dynhtml += '</table>';
 	dynhtml += '</div>';
 
@@ -129,33 +139,33 @@ function dynamic_exportcontent(cnt_list, company, fmonth, fyear){
 	tablesToExcel(totlcnt, 'SalesDailyReport.xls')
 }
 
-// Adds a blank cell of a specific width
+// Adds a blank cell.
 function blank() {
-	return `<td width="110">`
+	return `<td width="${_titlelist[1].width}">`
 }
 
 // Generates the header and title rows for both the consolidated and cost center tabs
-function generate_headers(titlelist, company, fmonth, fyear, cost_centers = null) {
+function generate_headers(cost_centers = null) {
 	var html = '';
 
 	// Generate the table title
 	// On the cost center tab, this will appear for every 2 data sets.
-	var col_count = titlelist.length - (_use_gross_profit_mtd ? 0 : 1);
+	var col_count = _titlelist.length - (_use_gross_profit_mtd ? 0 : 1);
 	var col_span = (col_count * 2) - 2;
 	var company_title = '';
-	var month_tile = '';
+	var month_title = '';
 	for (var i = 0; i < (cost_centers == null ? 2 : cost_centers.length); i++) {
 		if (i % 2 == 0) {
-			company_title += `<td style="text-align: left; font-weight: bold;" colspan="${col_span}">Sales Statistics For ${company}</td>${blank()}`;
-			month_tile += `<td style="text-align: left; font-weight: normal;" colspan="${col_span}">Month: ${fmonth}&nbsp${fyear}</td>${blank()}`;	
+			company_title += `<td style="text-align: left; font-weight: bold;" colspan="${col_span}">Sales Statistics For ${_company}</td>${blank()}`;
+			month_title += `<td style="text-align: left; font-weight: normal;" colspan="${col_span}">Month: ${_fmonth}&nbsp${_fyear}</td>${blank()}`;	
 		}
 	}
 
-	html += `<tr>${company_title}</tr><tr>${month_tile}</tr><tr />`;
+	html += `<tr>${company_title}</tr><tr>${month_title}</tr><tr />`;
 	
 	// Generate primary headers for each cost center
 	if (cost_centers != null) {
-		var col_count = titlelist.length - 2 - (_use_gross_profit_mtd ? 0 : 1)
+		var col_count = _titlelist.length - 2 - (_use_gross_profit_mtd ? 0 : 1)
 		var cc_row = '';
 		var month_row = '';
 
@@ -166,7 +176,7 @@ function generate_headers(titlelist, company, fmonth, fyear, cost_centers = null
 			}
 
 			cc_row +=`<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${cost_centers[i]}</th>`;
-			month_row +=`<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${fmonth}&nbsp${fyear}</th>`;
+			month_row +=`<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${_fmonth}&nbsp${_fyear}</th>`;
 
 			if (i % 2 == 1) {
 				cc_row += `${blank()}`;
@@ -177,8 +187,8 @@ function generate_headers(titlelist, company, fmonth, fyear, cost_centers = null
 		html += `<tr>${cc_row}</tr><tr>${month_row}</tr>`;
 	} else {
 		html += '<tr>';
-		html += `<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${fmonth}&nbsp${fyear}</th>`;
-		html += `<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count - 1}">${fmonth}&nbsp${parseInt(fyear) - 1}</th>`;
+		html += `<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count}">${_fmonth}&nbsp${_fyear}</th>`;
+		html += `<th style="text-align: center; border: 1px solid #89898d; font-weight: bold; font-style: italic;" colspan="${col_count - 1}">${_fmonth}&nbsp${parseInt(_fyear) - 1}</th>`;
 		html += '</tr>';
 	}
 	
@@ -189,20 +199,20 @@ function generate_headers(titlelist, company, fmonth, fyear, cost_centers = null
 		// For every 2 data sets, add the date/day columns
 		if (i % 2 == 0) {
 			for(var j = 0; j < 2; j++) {
-				html += `<td width="${titlelist[j].width}" style="text-align: ${titlelist[j].alignment}; 
-					border: 1px solid #89898d; font-weight: bold;">${titlelist[j].label}</td>`;
+				html += `<td width="${_titlelist[j].width}" style="text-align: ${_titlelist[j].alignment}; 
+					border: 1px solid #89898d; font-weight: bold;">${_titlelist[j].label}</td>`;
 			}
 		} else if (cost_centers == null) {
 			// For the consolidated report, repeat the "Day" column for the second data
-			html += `<td width="${titlelist[1].width}" style="text-align: ${titlelist[1].alignment}; 
-				border: 1px solid #89898d; font-weight: bold;">${titlelist[1].label}</td>`;
+			html += `<td width="${_titlelist[1].width}" style="text-align: ${_titlelist[1].alignment}; 
+				border: 1px solid #89898d; font-weight: bold;">${_titlelist[1].label}</td>`;
 		}
 
 		// Add the rest of the columns
-		for(var j = 2; j < titlelist.length; j++) {
-			if (titlelist[j].fieldname != "grossmtd" || _use_gross_profit_mtd) {
-				html += `<td width="${titlelist[j].width}" style="text-align: ${titlelist[j].alignment}; 
-					border: 1px solid #89898d; font-weight: bold;">${titlelist[j].label}</td>`;
+		for(var j = 2; j < _titlelist.length; j++) {
+			if (_titlelist[j].fieldname != "grossmtd" || _use_gross_profit_mtd) {
+				html += `<td width="${_titlelist[j].width}" style="text-align: ${_titlelist[j].alignment}; 
+					border: 1px solid #89898d; font-weight: bold;">${_titlelist[j].label}</td>`;
 			}
 		}
 
@@ -216,7 +226,7 @@ function generate_headers(titlelist, company, fmonth, fyear, cost_centers = null
 }
 
 // Generates the end rows for the tables
-function generate_table_end(titlelist, cost_centers = null) {
+function generate_table_end(cost_centers = null) {
 	html = '';
 
 	// Generate the table ends for each cost center
@@ -233,7 +243,7 @@ function generate_table_end(titlelist, cost_centers = null) {
 		}
 
 		// Add the rest of the columns
-		var col_count = titlelist.length - 2 - (_use_gross_profit_mtd ? 0 : 1)
+		var col_count = _titlelist.length - 2 - (_use_gross_profit_mtd ? 0 : 1)
 		for(var j = 0; j < col_count; j++) {
 			html += `<td style="border-bottom: 1px solid #89898d; ${j == 0 && cost_centers != null ? "border-left: 1px solid #89898d;" : ""} 
 				${j == col_count - 1 ? "border-right: 1px solid #89898d;" : ""}" />`;
@@ -249,7 +259,7 @@ function generate_table_end(titlelist, cost_centers = null) {
 }
 
 // Generates an html data row using consolidated cost center data.
-function populate_consolidated(datalist){	
+function populate_consolidated(){	
 	celldynhtml=``;
 
 	curr_year_html = [];
@@ -270,19 +280,19 @@ function populate_consolidated(datalist){
 	var prev_year_blank = `<td style="${left_border}" /><td /><td />${_use_gross_profit_mtd ? '<td />' : ''}<td style="${right_border}" />`;
 
 	// Iterate through the data list, adding seperate year data to separate lists.
-	for(var index = 0; index < datalist.length; index++) {	
-		var row_data = datalist[index];
+	for(var index = 0; index < _datalist.length; index++) {	
+		var row_data = _datalist[index];
 		html = ``;
 
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
-			html+=`<td style="text-align: center;   ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
+			html+=`<td style="text-align: center; ${left_border}">`+date.toLocaleDateString('en-CA', options)+`</td>`;
 			html+=`<td style="text-align: left;">`+row_data.day+`</td>`;
 			html+=`<td style="text-align: center;">`+row_data.noofinv+`</td>`;
-			html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.sales)+`</td>`;
-			html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
-			html+=`<td style="text-align: center; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
-			html+=_use_gross_profit_mtd ? `<td style="text-align: center; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
+			html+=`<td style="text-align: right;">`+dollarCAD.format(row_data.sales)+`</td>`;
+			html+=`<td style="text-align: right;">`+dollarCAD.format(row_data.salesmtd)+`</td>`;
+			html+=`<td style="text-align: center;mso-number-format:'#0.0%'; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross)+`</td>`;
+			html+=_use_gross_profit_mtd ? `<td style="text-align: center; mso-number-format:'#0.0%'; ${right_border}">`+formatAsPercent(row_data.grossmtd)+`</td>` : ``;
 		} else {
 			html+= curr_year_blank;
 		}
@@ -292,10 +302,10 @@ function populate_consolidated(datalist){
 		html = ``;
 		html+=`<td style="text-align: left;">`+row_data.day2+`</td>`;
 		html+=`<td style="text-align: center;">`+row_data.noofinv2+`</td>`;
-		html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.sales2)+`</td>`;
-		html+=`<td style="text-align: left;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
-		html+=`<td style="text-align: center; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
-		html+=_use_gross_profit_mtd ? `<td style="text-align: center; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
+		html+=`<td style="text-align: right;">`+dollarCAD.format(row_data.sales2)+`</td>`;
+		html+=`<td style="text-align: right;">`+dollarCAD.format(row_data.salesmtd2)+`</td>`;
+		html+=`<td style="text-align: center; mso-number-format:'#0.0%'; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data.gross2)+`</td>`;
+		html+=_use_gross_profit_mtd ? `<td style="text-align: center; mso-number-format:'#0.0%'; ${right_border}">`+formatAsPercent(row_data.grossmtd2)+`</td>` : ``;
 
 		prev_year_html.push(html);
 	}
@@ -312,7 +322,7 @@ function populate_consolidated(datalist){
 }
 
 // Generates an html data row using data for each cost center.
-function populate_cost_center(datalist, costcentlst){	
+function populate_cost_center(){	
 	celldynhtml="";
 
 	const options = { year: 'numeric', month: 'short', day: 'numeric' }
@@ -325,8 +335,8 @@ function populate_cost_center(datalist, costcentlst){
 	});
 
 	// Iterate through each data row
-	for(var index = 0; index < datalist.length; index++) {
-		var row_data = datalist[index];	
+	for(var index = 0; index < _datalist2.length; index++) {
+		var row_data = _datalist2[index];	
 
 		var left_border = 'border-left: 1px solid #89898d;';
 		var right_border = 'border-right: 1px solid #89898d;';
@@ -334,7 +344,7 @@ function populate_cost_center(datalist, costcentlst){
 		var date = new Date(row_data.date);
 		if (date <= new Date()) {
 			celldynhtml+='<tr>';
-			for(var cnt=0; cnt < costcentlst.length; cnt++) 
+			for(var cnt=0; cnt < _datacostcntlist3.length; cnt++) 
 			{
 				// Add the dates for every 2 data sets
 				if (cnt % 2 == 0) {
@@ -349,10 +359,10 @@ function populate_cost_center(datalist, costcentlst){
 				var col5 = 'grossmtdcstcnt' + cnt
 				
 				celldynhtml+=`<td style="text-align: center; ${left_border}">`+row_data[col1]+'</td>';
-				celldynhtml+='<td style="text-align: center;">'+dollarCAD.format(row_data[col2])+'</td>';
-				celldynhtml+='<td style="text-align: center;">'+dollarCAD.format(row_data[col3])+'</td>';
-				celldynhtml+=`<td style="text-align: center; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
-				celldynhtml+=_use_gross_profit_mtd ? `<td style="text-align: center; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
+				celldynhtml+='<td style="text-align: right;">'+dollarCAD.format(row_data[col2])+'</td>';
+				celldynhtml+='<td style="text-align: right;">'+dollarCAD.format(row_data[col3])+'</td>';
+				celldynhtml+=`<td style="text-align: center; mso-number-format:'#0.0%'; ${!_use_gross_profit_mtd ? right_border : ''}">`+formatAsPercent(row_data[col4])+'</td>';
+				celldynhtml+=_use_gross_profit_mtd ? `<td style="text-align: center; mso-number-format:'#0.0%'; ${right_border}">`+formatAsPercent(row_data[col5])+'</td>' : '';
 
 				if (cnt % 2 == 1) {
 					celldynhtml += blank();
@@ -361,7 +371,7 @@ function populate_cost_center(datalist, costcentlst){
 			celldynhtml+='</tr>';
 		} else {
 			celldynhtml+='<tr>';
-			for(var cnt=0; cnt < costcentlst.length; cnt++) {
+			for(var cnt=0; cnt < _datacostcntlist3.length; cnt++) {
 				// Add blank spots for the dates for every 2 data sets
 				if (cnt % 2 == 0) {
 					celldynhtml+=`<td style="${left_border}" /><td style="${right_border}" />`;
@@ -393,8 +403,8 @@ function getyears(){
 function formatAsPercent(num) {
 	return new Intl.NumberFormat('default', {
 	  style: 'percent',
-	  minimumFractionDigits: 2,
-	  maximumFractionDigits: 2,
+	  minimumFractionDigits: 1,
+	  maximumFractionDigits: 1,
 	}).format(num / 100);
   }
 
